@@ -17,7 +17,8 @@ class node(object):
         if self.blank_block_position[1] == 2:
             list_action.remove("right")
         if not list_action:
-            return False
+            print "empty successors"
+            return []
         else:
             return list_action
 
@@ -40,18 +41,26 @@ class node(object):
         list_successors = []
         for action in self.action():
             for item in action:
-                state = self.state
-                successor = node( self.depth + 1, )
-
+                state = self.result(self.state, item)
+                successor = node( self.depth + 1, state)
+                list_successors.append(successor)
         return list_successors
 
     def result(self, state, action):
         if action == "up":
-            result_state = 1
+            state[self.blank_block_position[0]][self.blank_block_position[1]] = state[self.blank_block_position[0] - 1][self.blank_block_position[1]]
+            state[self.blank_block_position[0] - 1][self.blank_block_position[1]] = " "
         if action == "down":
-            result_state = 1
+            state[self.blank_block_position[0]][self.blank_block_position[1]] = state[self.blank_block_position[0] + 1][
+                self.blank_block_position[1]]
+            state[self.blank_block_position[0] + 1][self.blank_block_position[1]] = " "
         if action == "left":
-            result_state = 1
+            state[self.blank_block_position[0]][self.blank_block_position[1]] = state[self.blank_block_position[0]][
+                self.blank_block_position[1] - 1]
+            state[self.blank_block_position[0]][self.blank_block_position[1] - 1] = " "
         if action == "right":
-            result_state = 1
-        return 0
+            state[self.blank_block_position[0]][self.blank_block_position[1]] = state[self.blank_block_position[0] - 1][
+                self.blank_block_position[1] + 1]
+            state[self.blank_block_position[0] - 1][self.blank_block_position[1] + 1] = " "
+        return state
+
